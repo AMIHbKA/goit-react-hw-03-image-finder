@@ -1,10 +1,16 @@
-import { Field, Formik } from 'formik';
-import { Form, Header } from './Searchbar.styled';
+import { Field, Form, Formik } from 'formik';
 
-export const Searchbar = props => {
+export const Searchbar = ({ onSearch }) => {
   return (
-    <Header className="searchbar">
-      <Formik>
+    <header className="searchbar">
+      <Formik
+        initialValues={{ query: '' }}
+        onSubmit={(values, { resetForm }) => {
+          console.log(values);
+          onSearch(values.query);
+          resetForm();
+        }}
+      >
         <Form className="form">
           <button type="submit" className="button">
             <span className="button-label">Search</span>
@@ -12,13 +18,15 @@ export const Searchbar = props => {
 
           <Field
             className="input"
+            name="query"
             type="search"
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
+            required
           />
         </Form>
       </Formik>
-    </Header>
+    </header>
   );
 };
