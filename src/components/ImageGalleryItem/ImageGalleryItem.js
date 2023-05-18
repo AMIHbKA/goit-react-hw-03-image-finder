@@ -1,5 +1,4 @@
-export const ImageGalleryItem = (id, webformatURL, tags, largeImageURL) => {
-  console.log('webformatURL', webformatURL);
+export const ImageGalleryItem = ({ id, webformatURL, tags, largeImageURL }) => {
   return (
     <li key={id} className="gallery-item">
       <img src={webformatURL} alt={tags} />

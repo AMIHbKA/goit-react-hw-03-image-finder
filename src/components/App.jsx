@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Searchbar } from './Searchbar/Searchbar';
-import * as API from 'services/api/api';
+import toast, { Toaster } from 'react-hot-toast';
+const notify = () => toast('Here is your toast.');
 export class App extends Component {
   state = {
     query: '',
     page: 1,
+    isLoading: false,
   };
 
   onSearch = newQuery => {
+    notify();
     this.setState(prevState => {
       const { query } = prevState;
 
@@ -29,7 +32,8 @@ export class App extends Component {
     return (
       <>
         <Searchbar onSearch={this.onSearch} />
-        <ImageGallery query={query} page={page} />
+        <ImageGallery query={query} page={page} onLoadMore={this.nextPage} />
+        <Toaster />
       </>
     );
   }
