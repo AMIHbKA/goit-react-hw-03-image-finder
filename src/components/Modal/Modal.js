@@ -1,9 +1,11 @@
-export const Modal = () => {
+import { ModalStyled, Overlay } from './Modal.styled';
+
+export const Modal = ({ src, alt }) => {
   return (
-    <div className="overlay">
-      <div className="modal">
-        <img src="" alt="" />
-      </div>
-    </div>
+    <Overlay className="overlay">
+      <ModalStyled className="modal">
+        <img src={src} alt={alt} />
+      </ModalStyled>
+    </Overlay>
   );
 };

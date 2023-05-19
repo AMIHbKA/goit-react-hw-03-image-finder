@@ -7,11 +7,7 @@ const DEFAULT_ORIENTATION = 'horizontal';
 const DEFAULT_SAFESEARCH = true;
 axios.defaults.baseURL = 'https://pixabay.com/api/';
 
-export const imageSearch = async (
-  query,
-  page = 1,
-  perPage = DEFAULT_PER_PAGE
-) => {
+export const imageSearch = async (query, page = 1) => {
   const options = {
     params: {
       key: API_KEY,
@@ -19,7 +15,7 @@ export const imageSearch = async (
       image_type: DEFAULT_IMAGE_TYPE,
       orientation: DEFAULT_ORIENTATION,
       safesearch: DEFAULT_SAFESEARCH,
-      per_page: perPage,
+      per_page: DEFAULT_PER_PAGE,
       page: page,
     },
   };

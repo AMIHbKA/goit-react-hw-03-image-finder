@@ -55,7 +55,6 @@ export class ImageGallery extends Component {
 
   render() {
     const { isLoading } = this.state;
-    // const totalPages
     const { hits, totalHits } = this.state;
     const showButton = totalHits !== hits.length && !isLoading;
     console.log(
@@ -79,7 +78,6 @@ export class ImageGallery extends Component {
         </ul>
         {isLoading && <Loader />}
         {showButton && <Button onLoad={this.onLoadMore} />}
-        <Modal />
       </>
     );
   }
