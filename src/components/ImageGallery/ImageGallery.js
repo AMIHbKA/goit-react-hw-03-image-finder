@@ -5,29 +5,41 @@ import { Component } from 'react';
 
 import * as API from 'services/api/api';
 export class ImageGallery extends Component {
-  state = { data: null, isLoading: false, page: 1, totalPages: 1 };
+  state = { hits: null, total: 0, isLoading: false, page: 1, totalPages: 1 };
 
   async componentDidUpdate(prevProps, prevState) {
-    console.log('prevState', prevState);
     if (prevProps.query !== this.props.query) {
-      this.setState({ page: 1, data: null });
+      await this.setState({ page: 1, hits: [], total: 0 });
       const { query } = this.props;
       const { page } = this.state;
+      console.log('Страница в апдейте перед сбросом', page);
       this.getImages(query, page);
     }
   }
 
-  onLoadMore = () => {
-    this.setState(prevState => ({ page: prevState.page + 1 }));
-    console.log('page', this.state.page);
+  onLoadMore = async () => {
+    await this.setState(prevState => ({ page: prevState.page + 1 }));
+    const { query } = this.props;
+    const { page } = this.state;
+    console.log('Страница лоад мор', page);
+    this.getImages(query, page);
   };
 
   getImages = async (query, page) => {
     try {
       this.setState({ isLoading: true });
       const response = await API.imageSearch(query, page);
-      this.setState({ data: response, isLoading: false });
-      return response.data;
+      if (page === 1) {
+        const { hits, total } = response;
+        this.setState({ hits, total, isLoading: false });
+      } else {
+        // const { hits } = this.state.data;
+        this.setState({
+          hits: [...this.state.hits, ...response.hits],
+          isLoading: false,
+        });
+      }
+      // return response.data;
     } catch (error) {
       this.setState({ isLoading: false });
       console.log(error);
@@ -37,26 +49,23 @@ export class ImageGallery extends Component {
   render() {
     const { isLoading } = this.state;
     // const totalPages
-
+    const { hits, total } = this.state;
+    const length = hits?.length;
     return (
       <>
         <ul className="gallery">
-          {this.state.data &&
-            this.state.data.hits.map(
-              ({ id, webformatURL, tags, largeImageURL }) => (
-                <ImageGalleryItem
-                  id={id}
-                  webformatURL={webformatURL}
-                  tags={tags}
-                  largeImageURL={largeImageURL}
-                />
-              )
-            )}
+          {length &&
+            hits.map(({ id, webformatURL, tags, largeImageURL }) => (
+              <ImageGalleryItem
+                id={id}
+                webformatURL={webformatURL}
+                tags={tags}
+                largeImageURL={largeImageURL}
+              />
+            ))}
         </ul>
         {isLoading && <Loader />}
-        {this.state.data?.total > 0 && !isLoading && (
-          <Button onLoad={this.onLoadMore} />
-        )}
+        {total > 0 && !isLoading && <Button onLoad={this.onLoadMore} />}
       </>
     );
   }
