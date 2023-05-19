@@ -5,20 +5,24 @@ import { Component } from 'react';
 
 import * as API from 'services/api/api';
 export class ImageGallery extends Component {
-  state = { data: null, isLoading: false };
+  state = { data: null, isLoading: false, page: 1, totalPages: 1 };
 
   async componentDidUpdate(prevProps, prevState) {
-    console.log('prevProps', prevProps);
     console.log('prevState', prevState);
-
     if (prevProps.query !== this.props.query) {
-      const { query, page } = this.props;
+      this.setState({ page: 1, data: null });
+      const { query } = this.props;
+      const { page } = this.state;
       this.getImages(query, page);
     }
   }
 
+  onLoadMore = () => {
+    this.setState(prevState => ({ page: prevState.page + 1 }));
+    console.log('page', this.state.page);
+  };
+
   getImages = async (query, page) => {
-    console.log('props', this.props);
     try {
       this.setState({ isLoading: true });
       const response = await API.imageSearch(query, page);
@@ -32,7 +36,8 @@ export class ImageGallery extends Component {
 
   render() {
     const { isLoading } = this.state;
-    console.log('isLoading', isLoading);
+    // const totalPages
+
     return (
       <>
         <ul className="gallery">
@@ -49,7 +54,9 @@ export class ImageGallery extends Component {
             )}
         </ul>
         {isLoading && <Loader />}
-        {this.state.data && !isLoading && <Button />}
+        {this.state.data?.total > 0 && !isLoading && (
+          <Button onLoad={this.onLoadMore} />
+        )}
       </>
     );
   }
