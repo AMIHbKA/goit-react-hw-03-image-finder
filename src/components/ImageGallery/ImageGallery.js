@@ -1,11 +1,17 @@
 import { Button } from 'components/Button/Button';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import { Loader } from 'components/Loader/Loader';
+import { Modal } from 'components/Modal/Modal';
 import { Component } from 'react';
 
 import * as API from 'services/api/api';
 export class ImageGallery extends Component {
-  state = { hits: null, total: 0, isLoading: false, page: 1, totalPages: 1 };
+  state = {
+    hits: [],
+    totalHits: 0,
+    isLoading: false,
+    page: 1,
+  };
 
   async componentDidUpdate(prevProps, prevState) {
     if (prevProps.query !== this.props.query) {
@@ -30,8 +36,9 @@ export class ImageGallery extends Component {
       this.setState({ isLoading: true });
       const response = await API.imageSearch(query, page);
       if (page === 1) {
-        const { hits, total } = response;
-        this.setState({ hits, total, isLoading: false });
+        const { hits, total, totalHits } = response;
+        console.log(`Найдено изображений ${total}`);
+        this.setState({ hits, totalHits, isLoading: false });
       } else {
         // const { hits } = this.state.data;
         this.setState({
@@ -49,12 +56,18 @@ export class ImageGallery extends Component {
   render() {
     const { isLoading } = this.state;
     // const totalPages
-    const { hits, total } = this.state;
-    const length = hits?.length;
+    const { hits, totalHits } = this.state;
+    const showButton = totalHits !== hits.length && !isLoading;
+    console.log(
+      'showButton',
+      showButton,
+      totalHits === (hits?.length ?? false),
+      !isLoading
+    );
     return (
       <>
         <ul className="gallery">
-          {length &&
+          {totalHits !== 0 &&
             hits.map(({ id, webformatURL, tags, largeImageURL }) => (
               <ImageGalleryItem
                 id={id}
@@ -65,7 +78,8 @@ export class ImageGallery extends Component {
             ))}
         </ul>
         {isLoading && <Loader />}
-        {total > 0 && !isLoading && <Button onLoad={this.onLoadMore} />}
+        {showButton && <Button onLoad={this.onLoadMore} />}
+        <Modal />
       </>
     );
   }
