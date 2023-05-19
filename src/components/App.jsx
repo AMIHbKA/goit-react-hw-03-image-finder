@@ -6,8 +6,6 @@ const notify = () => toast('Here is your toast.');
 export class App extends Component {
   state = {
     query: '',
-    page: 1,
-    isLoading: false,
   };
 
   onSearch = newQuery => {
@@ -22,17 +20,16 @@ export class App extends Component {
       console.log('newQuery', newQuery);
       return {
         query: newQuery,
-        page: 1,
       };
     });
   };
 
   render() {
-    const { query, page } = this.state;
+    const { query } = this.state;
     return (
       <>
         <Searchbar onSearch={this.onSearch} />
-        <ImageGallery query={query} page={page} onLoadMore={this.nextPage} />
+        <ImageGallery query={query} />
         <Toaster />
       </>
     );
