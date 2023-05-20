@@ -1,6 +1,7 @@
 import { Modal } from 'components/Modal/Modal';
 import { Component } from 'react';
 import { createPortal } from 'react-dom';
+import { Item } from './ImageGalleryItem.styled';
 
 export class ImageGalleryItem extends Component {
   state = {
@@ -20,14 +21,16 @@ export class ImageGalleryItem extends Component {
     console.log('showModal', showModal);
     return (
       <>
-        <li key={id} className="gallery-item">
+        <Item key={id} className="gallery-item">
           <img src={webformatURL} alt={tags} onClick={this.onShowModal} />
           {showModal &&
             createPortal(
-              <Modal src={largeImageURL} alt={tags} />,
+              <Modal onActive={this.onShowModal}>
+                <img src={largeImageURL} alt={tags} />
+              </Modal>,
               document.body
             )}
-        </li>
+        </Item>
       </>
     );
   }

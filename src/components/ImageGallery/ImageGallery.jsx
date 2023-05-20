@@ -1,10 +1,10 @@
 import { Button } from 'components/Button/Button';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import { Loader } from 'components/Loader/Loader';
-import { Modal } from 'components/Modal/Modal';
 import { Component } from 'react';
 
 import * as API from 'services/api/api';
+import { GalleryList } from './ImageGallery.styled';
 export class ImageGallery extends Component {
   state = {
     hits: [],
@@ -65,7 +65,7 @@ export class ImageGallery extends Component {
     );
     return (
       <>
-        <ul className="gallery">
+        <GalleryList className="gallery">
           {totalHits !== 0 &&
             hits.map(({ id, webformatURL, tags, largeImageURL }) => (
               <ImageGalleryItem
@@ -75,7 +75,7 @@ export class ImageGallery extends Component {
                 largeImageURL={largeImageURL}
               />
             ))}
-        </ul>
+        </GalleryList>
         {isLoading && <Loader />}
         {showButton && <Button onLoad={this.onLoadMore} />}
       </>
