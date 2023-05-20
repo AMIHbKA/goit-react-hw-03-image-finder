@@ -9,7 +9,6 @@ export class ImageGalleryItem extends Component {
   };
 
   onShowModal = () => {
-    console.log('onShowModal');
     this.setState(prevState => {
       return { showModal: !prevState.showModal };
     });

@@ -8,7 +8,7 @@ export const SearchForm = ({ onSearch }) => {
       onSubmit={(values, { resetForm }) => {
         console.log(values);
         onSearch(values.query);
-        resetForm();
+        // resetForm();
       }}
     >
       <Form className="form">

@@ -57,12 +57,7 @@ export class ImageGallery extends Component {
     const { isLoading } = this.state;
     const { hits, totalHits } = this.state;
     const showButton = totalHits !== hits.length && !isLoading;
-    console.log(
-      'showButton',
-      showButton,
-      totalHits === (hits?.length ?? false),
-      !isLoading
-    );
+
     return (
       <>
         <GalleryList className="gallery">
