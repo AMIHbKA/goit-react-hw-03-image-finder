@@ -7,7 +7,6 @@ export const SearchForm = ({ onSearch }) => {
     <Formik
       initialValues={{ query: '' }}
       onSubmit={(values, { resetForm }) => {
-        console.log(values);
         onSearch(values.query);
         // resetForm();
       }}

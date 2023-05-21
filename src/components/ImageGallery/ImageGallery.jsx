@@ -12,7 +12,6 @@ const initialState = {
   totalHits: 0,
   isLoading: false,
   page: 1,
-  error: false,
 };
 
 export class ImageGallery extends Component {
@@ -28,26 +27,35 @@ export class ImageGallery extends Component {
 
   resetStateAndFetchImages = async () => {
     try {
-      this.setState({ ...initialState }, () => {
-        const { query } = this.props;
-        this.fetchImages(query);
-      });
-    } catch (error) {}
+      this.setState({ ...initialState }, this.fetchImages);
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   onLoadMore = () => {
     this.setState(
       prevState => ({ page: prevState.page + 1 }),
-      () => {
-        const { query } = this.props;
-        this.fetchImages(query);
-      }
+      this.fetchImages
     );
   };
 
-  fetchImages = async query => {
+  onLastPage = () => {
+    const { totalHits, hits } = this.state;
+    const isLastPage = hits.length >= totalHits;
+    if (isLastPage) {
+      toast(`You have reached the last page!`, {
+        icon: '😅',
+        style: { backgroundColor: '#3f51b5', color: '#fff' },
+        position: 'bottom-center',
+      });
+    }
+  };
+
+  fetchImages = async () => {
     try {
       this.setState({ isLoading: true });
+      const { query } = this.props;
       const { page } = this.state;
       const response = await API.imageSearch(query, page);
 
@@ -59,40 +67,44 @@ export class ImageGallery extends Component {
             `Great! The "${query}" request was successful. ${total} images were found!`,
             { style: { backgroundColor: 'green', color: '#fff' } }
           );
+          this.setState({ hits, totalHits });
         } else {
           toast(`Sorry. No images were found for your query "${query}"!`, {
             icon: '😥',
             style: { backgroundColor: 'red', color: '#fff' },
           });
         }
-
-        this.setState({ hits, totalHits });
       } else {
-        this.setState(prevState => ({
-          hits: [...prevState.hits, ...response.hits],
-        }));
+        this.setState(
+          prevState => ({
+            hits: [...prevState.hits, ...response.hits],
+          }),
+          this.onLastPage
+        );
+        setTimeout(() => {
+          window.scrollBy({
+            top: window.innerHeight,
+            behavior: 'smooth',
+          });
+        }, 200);
       }
-
-      this.setState({ isLoading: false, error: false });
     } catch (error) {
       this.setState({ ...initialState });
-      console.log('error', error);
       toast.error(error.message, {
         style: { backgroundColor: 'red', color: '#fff' },
       });
+    } finally {
+      this.setState({ isLoading: false });
     }
   };
 
   render() {
-    const { isLoading, hits, totalHits, page } = this.state;
+    const { isLoading, hits, totalHits } = this.state;
     const showButton = totalHits !== hits.length && !isLoading;
-    const isNoMoreImages = page > 1 && totalHits === hits.length;
-    console.log('page', page);
-    console.log('isNoMoreImages', isNoMoreImages);
-    console.log('totalHits', totalHits);
+
     return (
       <>
-        <GalleryList className="gallery">
+        <GalleryList>
           {totalHits > 0 &&
             hits.map(({ id, webformatURL, tags, largeImageURL }) => (
               <ImageGalleryItem

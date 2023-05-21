@@ -21,6 +21,5 @@ export const imageSearch = async (query, page = 1) => {
   };
 
   const response = await axios.get('', options);
-  console.log('response', response);
   return response.data;
 };
