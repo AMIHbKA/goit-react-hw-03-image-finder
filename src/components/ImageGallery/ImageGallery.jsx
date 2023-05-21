@@ -3,7 +3,7 @@ import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import { Loader } from 'components/Loader/Loader';
 import { Component } from 'react';
 import toast from 'react-hot-toast';
-
+import PropTypes from 'prop-types';
 import * as API from 'services/api/api';
 import { GalleryList } from './ImageGallery.styled';
 
@@ -121,3 +121,7 @@ export class ImageGallery extends Component {
     );
   }
 }
+
+ImageGallery.propTypes = {
+  query: PropTypes.string.isRequired,
+};

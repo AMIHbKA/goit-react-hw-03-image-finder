@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { CloseButton, ModalStyled, Overlay } from './Modal.styled';
+import PropTypes from 'prop-types';
 
 export class Modal extends Component {
   state = {
@@ -53,3 +54,8 @@ export class Modal extends Component {
     );
   }
 }
+
+Modal.propTypes = {
+  onActive: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
+};

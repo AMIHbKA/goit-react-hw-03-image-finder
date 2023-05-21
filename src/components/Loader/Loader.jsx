@@ -1,4 +1,5 @@
 import { RiseLoader } from 'react-spinners';
+import PropTypes from 'prop-types';
 
 export const Loader = ({ isLoading }) => {
   return (
@@ -13,4 +14,8 @@ export const Loader = ({ isLoading }) => {
       loading={isLoading}
     />
   );
+};
+
+Loader.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
 };

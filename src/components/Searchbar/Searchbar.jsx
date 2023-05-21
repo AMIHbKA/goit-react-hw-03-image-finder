@@ -1,5 +1,6 @@
 import { SearchForm } from 'components/SearchForm/SearchForm';
 import { Header } from './Searchbar.styled';
+import PropTypes from 'prop-types';
 
 export const Searchbar = ({ onSearch }) => {
   return (
@@ -7,4 +8,8 @@ export const Searchbar = ({ onSearch }) => {
       <SearchForm onSearch={onSearch} />
     </Header>
   );
+};
+
+Searchbar.propTypes = {
+  onSearch: PropTypes.func.isRequired,
 };
