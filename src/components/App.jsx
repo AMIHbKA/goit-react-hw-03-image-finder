@@ -4,22 +4,24 @@ import { Searchbar } from './Searchbar/Searchbar';
 import toast, { Toaster } from 'react-hot-toast';
 import { GlobalStyle } from 'UI/GlobalStyles/GlobalStyles';
 import { AppContainer } from './App.styled';
-const notify = () => toast('Here is your toast.');
+
 export class App extends Component {
   state = {
     query: '',
   };
 
   onSearch = newQuery => {
-    notify();
     this.setState(prevState => {
       const { query } = prevState;
 
       if (query === newQuery) {
-        console.log('запрос одинаковый');
+        toast(
+          `Information about the query "${newQuery}" has already been submitted!`,
+          { icon: '🙃' }
+        );
         return null;
       }
-      console.log('newQuery', newQuery);
+
       return {
         query: newQuery,
       };
@@ -33,7 +35,16 @@ export class App extends Component {
         <GlobalStyle />
         <Searchbar onSearch={this.onSearch} />
         <ImageGallery query={query} />
-        <Toaster />
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            style: {
+              color: '#3f51b5',
+              fontSize: '1.2em',
+            },
+            duration: 3000,
+          }}
+        />
       </AppContainer>
     );
   }

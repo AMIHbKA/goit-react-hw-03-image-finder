@@ -8,13 +8,15 @@ export class Modal extends Component {
 
   componentDidMount() {
     document.addEventListener('keydown', this.onEscKey);
+    document.documentElement.style.overflowY = 'hidden';
     setTimeout(() => {
       this.setState({ isOpen: true });
-    }, 250);
+    }, 500);
   }
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.onEscKey);
+    document.documentElement.style.overflowY = 'auto';
   }
 
   onEscKey = event => {
@@ -35,7 +37,7 @@ export class Modal extends Component {
   render() {
     const { isOpen } = this.state;
     const modalClassName = isOpen ? 'modal-open' : '';
-    console.log(modalClassName);
+
     return (
       <Overlay onClick={this.handleClick}>
         <ModalStyled className={modalClassName}>

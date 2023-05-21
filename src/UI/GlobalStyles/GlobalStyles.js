@@ -6,6 +6,10 @@ html {
   box-sizing: border-box;
   width: 100vw;
   overflow-x: hidden;
+  
+  .no-scroll {
+    overflow-y: hidden;
+  }
 }
 
 *,

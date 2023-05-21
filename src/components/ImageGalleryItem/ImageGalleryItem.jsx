@@ -17,7 +17,6 @@ export class ImageGalleryItem extends Component {
   render() {
     const { id, webformatURL, tags, largeImageURL } = this.props;
     const { showModal } = this.state;
-    console.log('showModal', showModal);
     return (
       <>
         <Item key={id} className="gallery-item">
@@ -34,4 +33,3 @@ export class ImageGalleryItem extends Component {
     );
   }
 }
-//largeImageURL

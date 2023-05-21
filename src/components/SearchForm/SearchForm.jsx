@@ -1,5 +1,6 @@
 import { Formik } from 'formik';
-import { ButtonSearch, Field, Form, LabelSearch } from './SearchForm.styled';
+import { SearchButtonIcon } from 'UI/icons';
+import { ButtonSearch, Field, Form } from './SearchForm.styled';
 
 export const SearchForm = ({ onSearch }) => {
   return (
@@ -13,7 +14,7 @@ export const SearchForm = ({ onSearch }) => {
     >
       <Form className="form">
         <ButtonSearch type="submit" className="button">
-          <LabelSearch className="button-label">Search</LabelSearch>
+          <SearchButtonIcon />
         </ButtonSearch>
 
         <Field
